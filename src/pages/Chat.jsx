@@ -156,30 +156,3 @@ export default function Chat() {
     </div>
   );
 }
-          <div className="max-w-4xl mx-auto">
-            <div className="glass-panel border border-white/50 rounded-3xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.06)] flex items-end gap-2 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all">
-              <div className="flex items-center pb-2 pl-2">
-                <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
-                  <span className="material-symbols-outlined">attach_file</span>
-                </button>
-              </div>
-              <textarea 
-                className="flex-1 bg-transparent border-none focus:ring-0 resize-none py-3 text-sm text-on-surface placeholder:text-on-surface-variant/50 min-h-[48px] outline-none" 
-                placeholder="Type a message or drop a file..." 
-                rows="1"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-              />
-              <div className="flex items-center pb-2 pr-2">
-                <button className="w-10 h-10 primary-gradient text-white flex items-center justify-center rounded-full shadow-lg hover:shadow-primary/30 transition-all hover:scale-105 active:scale-95">
-                  <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>send</span>
-                </button>
-              </div>
-            </div>
-            <p className="text-[10px] text-center text-on-surface-variant/50 mt-2 font-medium">Curator AI may display inaccurate info, so double-check its responses.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
