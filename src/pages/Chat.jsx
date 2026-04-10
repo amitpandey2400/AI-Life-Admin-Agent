@@ -1,7 +1,62 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { chatAPI } from '../services/apiClient';
 
 export default function Chat() {
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // Scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    
+    if (!input.trim()) return;
+
+    // Add user message to chat
+    const userMessage = {
+      id: Date.now(),
+      role: 'user',
+      content: input,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      // Send to backend API
+      const response = await chatAPI.sendMessage(input);
+      
+      const aiMessage = {
+        id: Date.now() + 1,
+        role: 'ai',
+        content: response.data?.reply || response.data || 'Sorry, I could not process that.',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      
+      const errorMessage = {
+        id: Date.now() + 1,
+        role: 'ai',
+        content: '❌ Sorry, there was an error. Please try again.',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex h-full w-full">
       {/* Historical Sidebar */}
@@ -11,23 +66,7 @@ export default function Chat() {
           <div className="space-y-1">
             <button className="w-full text-left px-3 py-2.5 rounded-xl bg-surface-container-lowest shadow-sm flex items-center gap-3 group transition-all">
               <span className="material-symbols-outlined text-primary text-sm">chat_bubble</span>
-              <span className="text-sm font-medium truncate">Quarterly Report Analysis</span>
-            </button>
-            <button className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-surface-container-high flex items-center gap-3 group transition-all">
-              <span className="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-primary">chat_bubble</span>
-              <span className="text-sm text-on-surface-variant group-hover:text-on-surface truncate">API Integration Guide</span>
-            </button>
-            <button className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-surface-container-high flex items-center gap-3 group transition-all">
-              <span className="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-primary">chat_bubble</span>
-              <span className="text-sm text-on-surface-variant group-hover:text-on-surface truncate">Marketing Strategy Brai...</span>
-            </button>
-          </div>
-          
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-10 mb-4 px-2">Folders</h3>
-          <div className="space-y-1">
-            <button className="w-full text-left px-3 py-2 rounded-xl hover:bg-surface-container-high flex items-center gap-3 group transition-all">
-              <span className="material-symbols-outlined text-on-surface-variant text-sm">folder</span>
-              <span className="text-sm text-on-surface-variant">Projects</span>
+              <span className="text-sm font-medium truncate">New Chat</span>
             </button>
           </div>
         </div>
@@ -35,69 +74,88 @@ export default function Chat() {
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative w-full h-full bg-surface/30">
+        {/* Messages Area */}
         <div className="flex-1 overflow-y-auto px-6 py-10 space-y-8 max-w-4xl mx-auto w-full pb-32">
-          
-          {/* AI Message */}
-          <div className="flex gap-4 group">
-            <div className="w-8 h-8 rounded-lg primary-gradient flex-shrink-0 flex items-center justify-center text-white shadow-md">
-              <span className="material-symbols-outlined text-xs">auto_awesome</span>
+          {messages.length === 0 && (
+            <div className="text-center py-12">
+              <span className="material-symbols-outlined text-6xl text-primary/30 block mb-4">auto_awesome</span>
+              <h2 className="text-2xl font-bold text-on-surface">Start a conversation</h2>
+              <p className="text-on-surface-variant mt-2">Ask me anything about managing your tasks, reminders, and documents!</p>
             </div>
-            <div className="flex-1 space-y-2">
-              <div className="glass-card border border-white/50 p-6 rounded-xl rounded-tl-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-on-surface leading-relaxed backdrop-blur-xl">
-                Good morning, Alex. I've finished analyzing the data sets you uploaded yesterday. The key takeaway is a 14% increase in conversion rates following the UI update. Would you like me to generate a summary visualization or dive deeper into the specific demographics?
-              </div>
-              <div className="flex items-center gap-4 px-1">
-                <span className="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant/50">AI Curator • 09:41 AM</span>
-              </div>
-            </div>
-          </div>
+          )}
 
-          {/* User Message */}
-          <div className="flex gap-4 flex-row-reverse group">
-            <div className="w-8 h-8 rounded-lg bg-surface-container-highest flex-shrink-0 flex items-center justify-center overflow-hidden border border-outline-variant/20 shadow-sm">
-              <img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuINTrPM8NgnL_bbECy3d_3AZoKJd86PvuZpKpgLPzALJnniPZJ7_mSvXVzA_NpyJlfxfSldIL_Pxg9yzaaMkt-WNFkr9AXsi0kMhvuo-hmaWryQ2ZDoUjIXfRn3pY8a-FezVCe6R6v3wAumjAQiZ1SJLkGv4JCqGFs4fy-MjtNtrm5CPqoxLKV5ws_mOL2S7QUU_YAysWnk8wGJRs0YoQSt15uzuhZMxBSRtwT1uRNuxnXoK4dlwM3uAbpJ_nWOUIXOeiy4N7WU5V" className="w-full h-full object-cover" />
-            </div>
-            <div className="flex-1 space-y-2 text-right">
-              <div className="bg-surface-container-highest inline-block px-6 py-4 rounded-xl rounded-tr-none text-on-surface leading-relaxed max-w-[80%] text-left shadow-sm">
-                That's great news. Let's see the visualization for the demographics. Specifically, I'm interested in the 25-34 age bracket in the North American region.
+          {messages.map((msg) => (
+            <div key={msg.id} className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''} group`}>
+              <div className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-white shadow-md ${
+                msg.role === 'ai' ? 'primary-gradient' : 'bg-surface-container-highest border border-outline-variant/20'
+              }`}>
+                <span className="material-symbols-outlined text-xs">
+                  {msg.role === 'ai' ? 'auto_awesome' : (
+                    <img alt="User" src="https://lh3.googleusercontent.com/a-/AFdZucozF" className="w-full h-full object-cover rounded-lg" />
+                  )}
+                </span>
               </div>
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant/50">Alex • 09:43 AM</span>
+              <div className={`flex-1 space-y-2 ${msg.role === 'user' ? 'text-right' : ''}`}>
+                <div className={`inline-block px-6 py-4 rounded-xl ${
+                  msg.role === 'ai'
+                    ? 'glass-card border border-white/50 rounded-tl-none shadow-sm'
+                    : 'bg-surface-container-highest rounded-tr-none shadow-sm'
+                } text-on-surface leading-relaxed ${msg.role === 'user' ? 'max-w-[80%] ml-auto' : ''}`}>
+                  {msg.content}
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant/50">
+                    {msg.role === 'ai' ? 'AI Assistant' : 'You'} • {msg.timestamp}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          
-          {/* AI Message with Data Card */}
-          <div className="flex gap-4 group hover-trigger">
-            <div className="w-8 h-8 rounded-lg primary-gradient flex-shrink-0 flex items-center justify-center text-white shadow-md">
-              <span className="material-symbols-outlined text-xs">auto_awesome</span>
-            </div>
-            <div className="flex-1 space-y-4">
-              <div className="glass-card border border-white/50 p-6 rounded-xl rounded-tl-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-on-surface leading-relaxed backdrop-blur-xl">
-                Certainly. I've prepared a breakdown of the 25-34 demographic performance. The peak activity occurs between 6:00 PM and 9:00 PM EST. Here's the distribution map:
+          ))}
+
+          {loading && (
+            <div className="flex gap-4 group">
+              <div className="w-8 h-8 rounded-lg primary-gradient flex-shrink-0 flex items-center justify-center text-white shadow-md">
+                <span className="material-symbols-outlined text-xs animate-spin">auto_awesome</span>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-5 rounded-2xl glass-card border border-white/40 flex flex-col gap-3 shadow-sm hover:-translate-y-1 transition-transform">
-                  <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Regional Growth</span>
-                  <div className="text-3xl font-manrope font-extrabold text-primary">+22.4%</div>
-                  <div className="h-12 w-full flex items-end gap-1 px-1">
-                    <div className="w-full bg-primary/20 h-1/2 rounded-t-sm"></div>
-                    <div className="w-full bg-primary/20 h-2/3 rounded-t-sm"></div>
-                    <div className="w-full bg-primary/20 h-1/3 rounded-t-sm"></div>
-                    <div className="w-full bg-primary/40 h-3/4 rounded-t-sm"></div>
-                    <div className="w-full bg-primary h-full rounded-t-sm shadow-sm relative overflow-hidden">
-                       <div className="absolute inset-0 bg-white/20"></div>
-                    </div>
+              <div className="flex-1 space-y-2">
+                <div className="glass-card border border-white/50 p-6 rounded-xl rounded-tl-none shadow-sm">
+                  <div className="flex gap-2">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input Bar */}
         <div className="absolute bottom-0 left-0 w-full px-6 py-6 bg-gradient-to-t from-surface via-surface/90 to-transparent">
+          <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto flex gap-3">
+            <input
+              type="text"
+              placeholder="Ask me anything..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={loading}
+              className="flex-1 bg-surface-container-lowest rounded-full px-6 py-3 border border-outline-variant/30 focus:outline-none focus:border-primary disabled:opacity-50 transition-all"
+            />
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              className="w-12 h-12 primary-gradient text-white flex items-center justify-center rounded-full shadow-lg hover:scale-105 active:scale-95 transition-transform disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined">send</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
           <div className="max-w-4xl mx-auto">
             <div className="glass-panel border border-white/50 rounded-3xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.06)] flex items-end gap-2 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all">
               <div className="flex items-center pb-2 pl-2">
