@@ -1,53 +1,35 @@
-const { Configuration, OpenAIApi } = require("openai");
 const logger = require("../utils/logger");
-
-// If using the new SDK:
-let openai;
-
-try {
-  // Try new SDK first (openai >= 4.0.0)
-  const OpenAI = require("openai").default || require("openai");
-  openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-} catch (e) {
-  logger.warn("New OpenAI SDK not available, skipping initialization");
-}
+const { getAIResponse } = require("./aiService");
 
 const generateChatResponse = async (userMessage) => {
   try {
-    if (!openai && !process.env.OPENAI_API_KEY) {
-      logger.warn("OpenAI API key not configured, returning mock response");
-      return getMockResponse(userMessage);
-    }
+    // Use the OpenAI service we created
+    const reply = await getAIResponse(userMessage);
+    
+    return {
+      reply: reply,
+      tasks: []
+    };
+  } catch (error) {
+    logger.error("Chat error:", error.message);
+    
+    // Fallback mock response
+    return getMockResponse(userMessage);
+  }
+};
 
-    const systemPrompt = `You are a helpful AI Life Admin Assistant. Your role is:
-1. Help break down tasks into actionable steps
-2. Explain things in simple Hinglish (mix of Hindi and English)
-3. Provide structured responses
+const getMockResponse = (userMessage) => {
+  logger.warn("Using mock response (OpenAI not configured)");
+  
+  return {
+    reply: `Thanks for your message: "${userMessage}". I'm learning how to respond better. Please set up OpenAI API key for full functionality.`,
+    tasks: []
+  };
+};
 
-Always respond with JSON containing:
-{
-  "reply": "Your helpful response in Hinglish",
-  "tasks": ["step1", "step2", "step3"]
-}`;
-
-    if (openai) {
-      // New SDK
-      const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userMessage },
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
-      });
-
-      const content = response.choices[0].message.content;
-      return parseResponse(content);
-    } else {
-      // Fallback to mock response
+module.exports = {
+  generateChatResponse,
+};
       return getMockResponse(userMessage);
     }
   } catch (error) {

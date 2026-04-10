@@ -5,9 +5,7 @@ const connectDB = async () => {
   try {
     const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/ai-life-admin";
     
-    await mongoose.connect(uri, {
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(uri);
 
     logger.info("✅ MongoDB connected successfully");
   } catch (error) {
