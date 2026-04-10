@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curator | Document Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#6a4b70",
+                    "on-primary-fixed-variant": "#14007b",
+                    "on-surface-variant": "#596064",
+                    "primary-dim": "#4843b4",
+                    "on-secondary-fixed-variant": "#4e5d6f",
+                    "surface-tint": "#5450c1",
+                    "surface-variant": "#dce4e8",
+                    "on-primary-fixed": "#000000",
+                    "surface": "#f7f9fb",
+                    "error-container": "#f97386",
+                    "on-secondary": "#f7f9ff",
+                    "on-tertiary-container": "#604266",
+                    "tertiary-fixed-dim": "#e7bfea",
+                    "inverse-primary": "#8c88fd",
+                    "on-primary-container": "#0c005c",
+                    "outline": "#747c80",
+                    "surface-container-highest": "#dce4e8",
+                    "surface-bright": "#f7f9fb",
+                    "on-primary": "#fbf7ff",
+                    "primary-fixed-dim": "#7f7bef",
+                    "on-tertiary": "#fff7fb",
+                    "secondary-fixed-dim": "#c6d6ec",
+                    "primary": "#5450c1",
+                    "secondary": "#526073",
+                    "surface-container-high": "#e3e9ed",
+                    "tertiary-fixed": "#f5cdf9",
+                    "error": "#a8364b",
+                    "tertiary-container": "#f5cdf9",
+                    "on-error": "#fff7f7",
+                    "on-tertiary-fixed": "#4c2f52",
+                    "on-secondary-container": "#445365",
+                    "inverse-surface": "#0b0f10",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-dim": "#67486c",
+                    "outline-variant": "#acb3b7",
+                    "secondary-container": "#d4e4fa",
+                    "primary-fixed": "#8c88fd",
+                    "on-secondary-fixed": "#324052",
+                    "on-background": "#2c3437",
+                    "primary-container": "#8c88fd",
+                    "surface-dim": "#d4dbdf",
+                    "tertiary": "#745479",
+                    "background": "#f7f9fb",
+                    "surface-container": "#eaeff2",
+                    "inverse-on-surface": "#9a9d9f",
+                    "secondary-fixed": "#d4e4fa",
+                    "error-dim": "#6b0221",
+                    "surface-container-low": "#f0f4f7",
+                    "on-surface": "#2c3437",
+                    "on-error-container": "#6e0523",
+                    "secondary-dim": "#465467"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar (from Shared Components JSON) -->
+<aside class="h-screen w-64 flex flex-col sticky top-0 bg-[#f0f4f7] dark:bg-slate-900 font-manrope text-sm font-medium tracking-tight">
+<div class="flex flex-col h-full py-6">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="chat_spark">chat_spark</span>
+</div>
+<div>
+<h1 class="text-lg font-bold text-[#2c3437] dark:text-slate-100">The Curator</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant opacity-60">AI Assistant</p>
+</div>
+</div>
+<div class="px-4 mb-4">
+<button class="w-full bg-primary text-on-primary py-3 px-4 rounded-full flex items-center justify-center gap-2 font-bold shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                    New Chat
+                </button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-[#2c3437] dark:text-slate-400 hover:translate-x-1 transition-transform mx-2 px-4 py-3 flex items-center gap-3 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+<a class="text-[#2c3437] dark:text-slate-400 hover:translate-x-1 transition-transform mx-2 px-4 py-3 flex items-center gap-3 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined" data-icon="chat_spark">chat_spark</span>
+                    Assistant
+                </a>
+<!-- Active Tab: Documents -->
+<a class="bg-[#8c88fd] text-white rounded-full mx-2 px-4 py-3 shadow-sm flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+                    Documents
+                </a>
+<a class="text-[#2c3437] dark:text-slate-400 hover:translate-x-1 transition-transform mx-2 px-4 py-3 flex items-center gap-3 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+                    Tasks
+                </a>
+<a class="text-[#2c3437] dark:text-slate-400 hover:translate-x-1 transition-transform mx-2 px-4 py-3 flex items-center gap-3 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                    Calendar
+                </a>
+</nav>
+<div class="mt-auto space-y-1 pt-6">
+<a class="text-[#2c3437] dark:text-slate-400 hover:translate-x-1 transition-transform mx-2 px-4 py-3 flex items-center gap-3 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    Settings
+                </a>
+<a class="text-[#2c3437] dark:text-slate-400 hover:translate-x-1 transition-transform mx-2 px-4 py-3 flex items-center gap-3 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+                    Support
+                </a>
+<div class="px-6 pt-4 flex items-center gap-3">
+<img alt="User profile photo" class="w-8 h-8 rounded-full object-cover shadow-sm" data-alt="Professional portrait of a young man with a friendly expression in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBisbFmfh6IldIhGUIoeGDuF8ETxvfnlvpLwnkHZVSerG7Z98iHNFUGiYxaRCGaPkzoU8U3S65bat-k68ZleUKjljSLfKsTFbsJZf8ii8A4EuuOGEUPZtYHcNgcg_Ir93W68DMWflEwt19eigeYrznxCUddGibyrOvFKZsr5-Ctl580qjvvG3S7gvXhj4L7PA7Xqp99PxRpYadFhcsplRbvmnDY36Yc1433QI7vmEmMyhjZtV63-E3aK_p-O88tEDfanKVBCv7fVVu_"/>
+<div class="flex flex-col">
+<span class="text-xs font-bold truncate max-w-[120px]">Alex Rivers</span>
+<span class="text-[10px] text-on-surface-variant">Pro Curator</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar (from Shared Components JSON) -->
+<header class="flex items-center justify-between px-8 w-full h-16 sticky top-0 z-40 bg-[#f7f9fb]/80 dark:bg-slate-950/80 backdrop-blur-xl font-manrope tracking-normal text-on-surface shadow-[0_12px_40px_rgba(44,52,55,0.06)]">
+<div class="flex items-center gap-6">
+<div class="hidden md:block font-black text-[#2c3437] dark:text-slate-100 text-xl">Curator AI</div>
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-on-surface-variant/60">
+<span class="material-symbols-outlined text-sm" data-icon="search">search</span>
+</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Search knowledge base..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#2c3437] dark:text-slate-400 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-[#2c3437] dark:text-slate-400 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+<div class="w-px h-6 bg-outline-variant/20 mx-2"></div>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-white/50" data-alt="User profile avatar close-up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADDlR0qtEaq4-zVi-UdF9dnIPFO1WP_62mP3ZGloI3Q9_MA3M8gHkS0_H2yvhp_UrTRGc39II8eLnJJGs71drbxql_fZJcyrAj0LS78WaT2u2cf4ku-Vd5ypW_oqezuDYrd95x_T_2dESsacgmbC3A5fdTmQhtafHQRTgwZMPudUNYJjDbtuEa52j6yM1KtuEuj_sk8NtqL1bldKSK9gr5N_n9_izE-Sxn02mtzwFwvWi5RQzwbOX7uB2YHbUcOaHs5AYvRx0Rwxur"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-auto p-8">
+<div class="max-w-7xl mx-auto space-y-12">
+<!-- Editorial Header -->
+<section>
+<h2 class="text-4xl font-extrabold font-manrope tracking-tight text-on-surface mb-2">Knowledge Vault</h2>
+<p class="text-on-surface-variant font-body text-lg">Centralize and analyze your intelligence. Drop files to begin curation.</p>
+</section>
+<!-- Bento Grid Layout for Upload and Overview -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Drag & Drop Zone -->
+<div class="col-span-12 lg:col-span-7">
+<div class="h-full bg-surface-container-lowest rounded-3xl p-12 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant/30 transition-all hover:border-primary/40 hover:bg-primary/5 group cursor-pointer">
+<div class="w-20 h-20 bg-tertiary-container/30 rounded-3xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-tertiary text-4xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<h3 class="text-xl font-bold font-manrope mb-2">Drop your curated documents</h3>
+<p class="text-on-surface-variant text-center max-w-sm mb-8">Support for PDF, TXT, DOCX and CSV. AI will automatically begin semantic indexing.</p>
+<button class="px-8 py-3 bg-on-surface text-surface rounded-full font-bold transition-all active:scale-95">Browse Files</button>
+</div>
+</div>
+<!-- Quick Stats / Recently Analyzed -->
+<div class="col-span-12 lg:col-span-5 grid grid-rows-2 gap-8">
+<div class="bg-surface-container-low rounded-3xl p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1">Storage Utilized</p>
+<h4 class="text-3xl font-black font-manrope">1.2 GB <span class="text-sm font-normal text-on-surface-variant">/ 5 GB</span></h4>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="storage">storage</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full mt-4">
+<div class="bg-primary h-full rounded-full w-[24%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-3xl p-8 flex items-center gap-6">
+<div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<h4 class="text-xl font-bold font-manrope">AI Enrichment Active</h4>
+<p class="text-sm text-on-surface-variant">Real-time semantic parsing is processing 2 background uploads.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Document Explorer Section -->
+<div class="flex gap-8 items-start">
+<!-- Document List -->
+<div class="flex-1 space-y-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold font-manrope">Recent Uploads</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="filter_list">filter_list</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="sort">sort</span>
+</button>
+</div>
+</div>
+<!-- Document Item 1 (Active/Selected) -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between border-2 border-primary/20 shadow-[0_8px_24px_rgba(84,80,193,0.08)] cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+</div>
+<div>
+<h5 class="font-bold text-on-surface">Q3 Market Research.pdf</h5>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">Added 2 hours ago</span>
+<span class="w-1 h-1 bg-outline-variant/40 rounded-full"></span>
+<span class="text-xs text-on-surface-variant">4.2 MB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span>
+                                    Analyzed
+                                </span>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Document Item 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between hover:bg-surface-container-low transition-all cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center group-hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="table_chart">table_chart</span>
+</div>
+<div>
+<h5 class="font-bold text-on-surface">FY24_Projections_v2.csv</h5>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">Yesterday at 4:15 PM</span>
+<span class="w-1 h-1 bg-outline-variant/40 rounded-full"></span>
+<span class="text-xs text-on-surface-variant">12.8 MB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="sync">sync</span>
+                                    Indexing
+                                </span>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Document Item 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between hover:bg-surface-container-low transition-all cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center group-hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="article">article</span>
+</div>
+<div>
+<h5 class="font-bold text-on-surface">Brand Guidelines_Draft.docx</h5>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">3 days ago</span>
+<span class="w-1 h-1 bg-outline-variant/40 rounded-full"></span>
+<span class="text-xs text-on-surface-variant">1.5 MB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span>
+                                    Analyzed
+                                </span>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Document Item 4 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 flex items-center justify-between hover:bg-surface-container-low transition-all cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center group-hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="image">image</span>
+</div>
+<div>
+<h5 class="font-bold text-on-surface">Logo_Construction_Whitepaper.pdf</h5>
+<div class="flex items-center gap-3 mt-1">
+<span class="text-xs text-on-surface-variant">Last week</span>
+<span class="w-1 h-1 bg-outline-variant/40 rounded-full"></span>
+<span class="text-xs text-on-surface-variant">25.3 MB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="verified">verified</span>
+                                    Analyzed
+                                </span>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Preview Panel (Bento Card Style) -->
+<div class="w-[400px] bg-surface-container-lowest rounded-3xl p-0 overflow-hidden shadow-[0_32px_80px_rgba(44,52,55,0.08)] sticky top-24 border border-outline-variant/10">
+<!-- Preview Header -->
+<div class="p-6 border-b border-outline-variant/10 bg-surface-container-low/30">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-bold font-manrope">Document Insights</h4>
+<button class="p-1 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="close">close</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+</div>
+<div class="min-w-0">
+<p class="font-bold truncate text-sm">Q3 Market Research.pdf</p>
+<p class="text-xs text-on-surface-variant">Analyzed by GPT-4o Curator</p>
+</div>
+</div>
+</div>
+<!-- Preview Content (Simulated) -->
+<div class="p-6 space-y-6">
+<!-- Image Preview Thumbnail -->
+<div class="rounded-2xl overflow-hidden aspect-[4/3] bg-surface-container-low group relative">
+<img alt="Market Research Preview" class="w-full h-full object-cover opacity-60 mix-blend-multiply group-hover:scale-105 transition-transform duration-700" data-alt="Modern business data chart visualization with clean aesthetic and blue color palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEgwyLjr7etXSGxq0Qr10ARLwNcL6ZWMvbTJoM_CSJZbkPzHFSQ_G0fiY61O163QPqbttJ7XVkWJkCP7khXiw1FPXn8arc5QZ1L-rZj2wpBaW7Yvtt_VAdo4-KBFtZZGUOYRPzewTKcKeO5HDPosvXCrNWHFBo5j9Kk3cAIBUyT18cVWL69LQAWDj_dH38pY7J7ka0lxbRWhx9BXwYfbSPP129MX_x0NrElmH1IzCer-D0j8zAdY1jYOYL8RbMJMlenqECLM1WLlKW"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold shadow-xl border border-white">
+                                        Open Full View
+                                    </button>
+</div>
+</div>
+<!-- AI Summary Section -->
+<div class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<h5 class="text-xs font-black uppercase tracking-widest text-on-surface-variant">AI Summary</h5>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                    This report highlights a <span class="text-on-surface font-semibold">15% increase</span> in regional demand for digital assets. Key stakeholders identified include institutional investors and mid-sized tech firms looking for diversification.
+                                </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="px-2 py-1 bg-tertiary-container/30 text-on-tertiary-container text-[10px] font-bold rounded-lg border border-tertiary-container/50">#market-trends</span>
+<span class="px-2 py-1 bg-tertiary-container/30 text-on-tertiary-container text-[10px] font-bold rounded-lg border border-tertiary-container/50">#q3-growth</span>
+<span class="px-2 py-1 bg-tertiary-container/30 text-on-tertiary-container text-[10px] font-bold rounded-lg border border-tertiary-container/50">#stakeholders</span>
+</div>
+</div>
+<!-- CTA Actions -->
+<div class="grid grid-cols-2 gap-4 pt-4">
+<button class="flex items-center justify-center gap-2 py-3 bg-primary text-white rounded-2xl font-bold text-sm shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="chat_spark">chat_spark</span>
+                                    Ask AI
+                                </button>
+<button class="flex items-center justify-center gap-2 py-3 bg-surface-container-high text-on-surface rounded-2xl font-bold text-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                                    Export
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
