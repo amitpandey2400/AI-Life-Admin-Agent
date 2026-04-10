@@ -20,8 +20,10 @@ const app = express();
 connectDB();
 
 // Middleware
+const corsOrigin = process.env.CORS_ORIGIN || process.env.RAILWAY_PUBLIC_DOMAIN || "http://localhost:5173";
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+  origin: corsOrigin,
   credentials: true,
 }));
 
@@ -78,7 +80,7 @@ const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
   logger.info(`✅ Server running on http://localhost:${PORT}`);
-  logger.info(`📌 CORS enabled for: ${process.env.CORS_ORIGIN || "http://localhost:5173"}`);
+  logger.info(`📌 CORS enabled for: ${corsOrigin}`);
 });
 
 // Handle unhandled errors
